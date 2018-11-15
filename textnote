@@ -1,0 +1,17 @@
+char **line;
+
+line = pointeur sur une chaine de charactère, tel que *line;
+on peut manipuler *line, allouer mémoire, donner une chaine etc... et retrouver son adresse en usant de line dans un main.
+
+allouer à *line une mémoire de 1 pour pouvoir y substituer l'adresse d'une chaîne contenant notre -line-
+
+lire le fichier, jusqu'à trouver un \n OU jusqu'à la fin (sois read qui renvoie 0).
+
+Copier chaque caractère lu dans une chaîne, donner cette chaîne à *line.
+-> Malloc size ? comment savoir la taille de la chaîne ?
+
+piste : Récupérer BUFF_SIZE lettre, les stocker dans une chaîne "str" -> on alloue donc à "str" BUFF_SIZE byte + 1 avec malloc; on termine str avec un "\0";
+On free str, puis on re-malloc BUFF_SIZE pour récupérer la suite, puis on re-concatène à la chaîne déjà créée.
+
+
+---Concaténer cette chaîne à la chaîne précedente de line, avec ft_strjoin par exemple : on donne à line le retour de ft_strjoin. ATTENTION aux memory leaks ! Essayer de free les chaînes devenue obsolète.----  
