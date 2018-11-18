@@ -6,7 +6,7 @@ int			ft_checkerror(char **line, char **str)
 		return (-1);
 	if (!*str)
 	{
-		if (!(*str = (char *)malloc(sizeof (char) * BUFF_SIZE + 1)))
+		if (!(*str = ft_strnew(BUFF_SIZE + 1)))
 			return (-1);
 	}
 	return (0);
@@ -38,7 +38,7 @@ int			tmp_init(char **tmp, char *str)
 		k++;
 	if (k == 0)
 		return (-2);
-	if (!(*tmp =(char *)malloc(sizeof(char) * k)))
+	if (!(*tmp =ft_strnew(k)))
 		return (-1);
 	y = 0;
 	while (y < k)

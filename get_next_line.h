@@ -22,7 +22,26 @@ char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_memmove(void *dest, const void *src, size_t howmany);
 void	ft_putnbr_fd(int nbr, int fd);
 void	ft_putchar_fd(char c, int fd);
+char	*ft_strnew(size_t size);
 
+
+char	*ft_strnew(size_t size)
+{
+	char		*newstr;
+	char		*reset;
+	size_t		k;
+
+	k = 0;
+	if (!(newstr = (char *)malloc((sizeof(char)) * size + 1)))
+		return (NULL);
+	reset = newstr;
+	while (k <= size)
+	{
+		newstr[k] = '\0';
+		k++;
+	}
+	return (reset);
+}
 
 void	ft_putchar_fd(char c, int fd)
 {
