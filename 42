@@ -1,23 +1,24 @@
-int 		ft_reader(char **str, char **line, int fd)
-{
-	int k;
-	char buffer[BUFF_SIZE + 1];
-	char *tmp;
+1.  ** À quatre heures du matin, l'été, **
+2.  ** Le sommeil d'amour dure encore. **
+3.  ** Sous les bosquets l'aube évapore **
+4.  ** L'odeur du soir fêté. **
 
-	while (test_str(*str) == -1)
-	{
-		if(!(k = read(fd, buffer, BUFF_SIZE)))
-			return (0);
-		buffer[k] = '\0';
-		ft_strcpy(*str, (char const*)buffer);
-		if(tmp_init(&tmp, *str, k) != -2)
-		{
-			*line = ft_strjoin(*line, tmp);
-			free(tmp);
-		}	
-	}
-	*str += test_str(*str) + 1;
-	return (1);
-}
+5.  ** Mais là-bas dans l'immense chantier **
+6.  ** Vers le soleil des Hespérides, **
+7.  ** En bras de chemise, les charpentiers **
+8.  ** Déjà s'agitent. **
 
-int			get_next_line(const int fd, char **line)
+9.  ** Dans leur désert de mousse, tranquilles, **
+10. ** Ils préparent les lambris précieux **
+11. ** Où la richesse de la ville **
+12. ** Rira sous de faux cieux. **
+
+13. ** Ah ! pour ces Ouvriers charmants **
+14. ** Sujets d'un roi de Babylone, **
+15. ** Vénus ! laisse un peu les Amants, **
+16. ** Dont l'âme est en couronne. **
+
+17. ** Ô Reine des Bergers ! **
+18. ** Porte aux travailleurs l'eau-de-vie, **
+19. ** Pour que leurs forces soient en paix **
+20. ** En attendant le bain dans la mer, à midi. ** 

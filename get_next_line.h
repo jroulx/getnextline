@@ -1,7 +1,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 30
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -19,6 +19,63 @@ int 	ft_strlen(const char *str);
 void	ft_putchar(char c);
 void 	ft_putstr(char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memmove(void *dest, const void *src, size_t howmany);
+void	ft_putnbr_fd(int nbr, int fd);
+void	ft_putchar_fd(char c, int fd);
+
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putnbr_fd(int nbr, int fd)
+{
+	if (nbr < 0)
+	{
+		ft_putchar_fd('-', fd);
+		nbr = -nbr;
+	}
+	if (nbr == -2147483648)
+	{
+		ft_putchar_fd('2', fd);
+		nbr %= 1000000000;
+		nbr = -nbr;
+	}
+	if (nbr >= 10)
+	{
+		ft_putnbr_fd(nbr / 10, fd);
+		ft_putnbr_fd(nbr % 10, fd);
+	}
+	else
+		ft_putchar_fd(nbr + '0', fd);
+}
+
+void	*ft_memmove(void *dest, const void *src, size_t howmany)
+{
+	const char		*src2;
+	char			*dest2;
+	size_t		k;
+	
+	k = 0;
+	src2 = src;
+	dest2 = dest;
+	if (src2 < dest2)
+	{
+		while (k < howmany)
+		{
+			dest2[howmany - 1] = src2[howmany - 1];
+			howmany--;
+		}
+	}
+	else
+		while (k < howmany)
+		{
+			dest2[k] = src2[k];
+			k++;
+		}
+	return (dest);
+}
 
 void	*ft_memcpy(void *dest, const void *src, size_t howmany)
 {
@@ -100,6 +157,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	str_len = ft_strlen(s1) + ft_strlen(s2);
+	ft_putstr("\nSEGFAULT___JOIN ?\n");
+	ft_putnbr_fd(str_len, 1);
+	ft_putchar('\n');
 	k = 0;
 	if (!(join = (char *)malloc(sizeof (char) * str_len + 1)))
 		return (NULL);
