@@ -85,7 +85,7 @@ int			get_next_line(const int fd, char **line)
 
 	if (ft_checkerror(line, &str) == -1)
 		return (-1);
-	*line = malloc(sizeof (char*));
+	*line = ft_strnew(0);
 	if (str[0] == '\n')
 	{
 			*line = ft_strdup("");
