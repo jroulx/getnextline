@@ -41,7 +41,6 @@ int			tmp_init(char **tmp, char *str)
 	if (!(*tmp =(char *)malloc(sizeof(char) * k)))
 		return (-1);
 	y = 0;
-	/**tmp = (char *)ft_memmove((char *)*tmp, (char *)str, k);*/
 	while (y < k)
 	{
 		(*tmp)[y] = str[y];
