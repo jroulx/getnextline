@@ -7,7 +7,7 @@ int			ft_checkerror(char **line, char **str)
 	if (!*str)
 	{
 		if (!(*str = (char *)malloc(sizeof (char) * BUFF_SIZE + 1)))
-			return (-1);
+			return (-1)
 	}
 	return (0);
 }
@@ -18,12 +18,11 @@ int			test_str(char *str)
 
 	k = 0;
 	if (!str)
-		return (-2);
+		return (-1);
 	while (str[k])
 	{
 		if (str[k] == '\n')
 			return (k);
-		k++;
 	}
 	return (-1);
 }
@@ -37,7 +36,7 @@ int			tmp_init(char **tmp, char *str, int rd_byte)
 	while (str[k] && str[k] != '\n')
 		k++;
 	if (k == 0)
-		return (-2);
+		return (-1);
 	if (!(*tmp =(char *)malloc(sizeof(char) * k + 1)))
 		return (-1);
 	y = 0;
@@ -58,15 +57,12 @@ int 		ft_reader(char **str, char **line, int fd)
 
 	while (test_str(*str) == -1)
 	{
-		if(!(k = read(fd, buffer, BUFF_SIZE)))
-			return (0);
 		buffer[k] = '\0';
+		k = read(fd, buffer, BUFF_SIZE);
 		ft_strcpy(*str, (char const*)buffer);
-		if(tmp_init(&tmp, *str, k) != -2)
-		{
-			*line = ft_strjoin(*line, tmp);
-			free(tmp);
-		}	
+		free (tmp);
+		tmp_init(&tmp, *str, k);
+		*line = ft_strjoin(*line, tmp);	
 	}
 	*str += test_str(*str) + 1;
 	return (1);
@@ -75,48 +71,22 @@ int 		ft_reader(char **str, char **line, int fd)
 int			get_next_line(const int fd, char **line)
 {
 	static char *str;
-	char		*tmp;
 
-	if (ft_checkerror(line, &str) == -1)
+	if (ft_checkerror(line, str) == -1)
 		return (-1);
-	*line = malloc(sizeof (char*));
+
 	if (str[0] == '\n')
-	{
+		{
 			*line = ft_strdup("");
 			str++;
 			return(1);
-	}
+		}
 	if (str[0])
 	{
-		tmp_init(&tmp, str, BUFF_SIZE);
-		*line = ft_strjoin(*line, tmp);
-		while (str[0] != '\n' && str[0])
+		ft_strjoin(*line, str);
+		while (str[0])
 			str++;
-		free(tmp);
 	}
 	if (ft_reader (&str, line, fd))
 		return (1);
-	else return (0);
-}
-
-int main(int argc, char **argv)
-{
-	char *line;
-	int 	fd;
-	int 	k;
-
-	k = 1;
-	(void)argc;
-	if((fd = open(argv[1], O_RDONLY)) == -1)
-		return (0);
-	while (k == 1)
-	{
-		k = get_next_line(fd, &line);
-		ft_putstr("\nline = ");
-		ft_putstr(line);
-	}
-	ft_putchar('\n');
-	free(line);
-	close (fd);
-	return (0);
 }

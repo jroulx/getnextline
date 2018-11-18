@@ -11,7 +11,59 @@
 /*Alloue (avec malloc(3)) et retourne une chaine de caractères
 / “fraiche” terminée par un ’\0’ résultant de la concaténation
 / de s1 et s2. Si l’allocation echoue, la fonction renvoie NULL. */
-int 	ft_strlen(char *str)
+void	*ft_memcpy(void *dest, const void *src, size_t howmany);
+char	*ft_strdup(const char *s);
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strcpy(char *dest, const char *src);
+int 	ft_strlen(const char *str);
+void	ft_putchar(char c);
+void 	ft_putstr(char *str);
+char	*ft_strjoin(char const *s1, char const *s2);
+
+void	*ft_memcpy(void *dest, const void *src, size_t howmany)
+{
+	size_t			k;
+	unsigned char	*dest_temp;
+	unsigned char	*src_temp;
+
+	dest_temp = (unsigned char *)dest;
+	src_temp = (unsigned char *)src;
+	k = 0;
+	while (k < howmany)
+	{
+		dest_temp[k] = src_temp[k];
+		k++;
+	}
+	return (dest);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*newstring;
+
+	if (!(newstring = (char*)malloc((sizeof(char)) * ft_strlen(s) + 1)))
+		return (NULL);
+	ft_memcpy(newstring, s, ft_strlen(s));
+	newstring[ft_strlen(s)] = (char)s[ft_strlen(s)]; 
+	return (newstring);
+}
+
+
+char	*ft_strcpy(char *dest, const char *src)
+{
+	int k;
+
+	k = 0;
+	while (src[k])
+	{
+		dest[k] = src[k];
+		k++;
+	}
+	dest[k] = '\0';
+	return (dest);
+}
+
+int 	ft_strlen(const char *str)
 {
 	int k;
 
@@ -58,7 +110,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	y = k;
 	k = 0;
-	while (s2[k])
+	while (s2[k] && s2[k])
 	{
 		join[y] = s2[k];
 		k++;

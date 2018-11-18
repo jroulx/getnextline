@@ -1,4 +1,23 @@
-42heyhey
-4242wfwgwgeyhey
-42fefhey
-42
+int 		ft_reader(char **str, char **line, int fd)
+{
+	int k;
+	char buffer[BUFF_SIZE + 1];
+	char *tmp;
+
+	while (test_str(*str) == -1)
+	{
+		if(!(k = read(fd, buffer, BUFF_SIZE)))
+			return (0);
+		buffer[k] = '\0';
+		ft_strcpy(*str, (char const*)buffer);
+		if(tmp_init(&tmp, *str, k) != -2)
+		{
+			*line = ft_strjoin(*line, tmp);
+			free(tmp);
+		}	
+	}
+	*str += test_str(*str) + 1;
+	return (1);
+}
+
+int			get_next_line(const int fd, char **line)
