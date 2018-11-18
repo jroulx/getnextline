@@ -40,7 +40,13 @@ int			tmp_init(char **tmp, char *str, int rd_byte)
 		return (-2);
 	if (!(*tmp =(char *)malloc(sizeof(char) * k)))
 		return (-1);
-	*tmp = (char *)ft_memmove((char *)*tmp, (char *)str, k);
+	y = 0;
+	/**tmp = (char *)ft_memmove((char *)*tmp, (char *)str, k);*/
+	while (y < k)
+	{
+		(*tmp)[y] = str[y];
+		y++;
+	}
 	(*tmp)[k] = '\0';
 	return (1);
 }
@@ -57,22 +63,15 @@ int 		ft_reader(char **str, char **line, int fd)
 			return (0);
 		buffer[k] = '\0';
 		ft_strcpy(*str, (char const*)buffer);
-		ft_putstr("\nSTR: ");
-		ft_putstr(*str);
-		ft_putstr("\n*********************");
 		if(tmp_init(&tmp, *str, k) != -2)
 		{
-			ft_putstr("\nLINE: ");
-			ft_putstr(*line);
-			ft_putstr("\n*********************");
-			ft_putstr("\nTMP: ");
-			ft_putstr(tmp);
-			ft_putstr("\n-------------------------------------");
-			ft_putchar('\n');
-			ft_putstr("\nSEGFAULT??????");
-			*line = ft_strjoin(*line, tmp);
-			ft_putstr("\nSEGFAULT??????");
-			/*ft_putstr("\n Zone  str_join : crash !");*/
+			ft_putstr("\nSegfault ici ?");
+			if(!(*line = ft_strjoin(*line, tmp)))
+			{
+				ft_putstr("\nIci peut-être ?");
+				return (0);
+			}
+			ft_putstr("\nOu ici ?");
 			free(tmp);
 		}
 	}

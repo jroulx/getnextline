@@ -157,11 +157,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	str_len = ft_strlen(s1) + ft_strlen(s2);
-	ft_putstr("\nSEGFAULT___JOIN ?\n");
-	ft_putnbr_fd(str_len, 1);
-	ft_putchar('\n');
 	k = 0;
-	if (!(join = (char *)malloc(sizeof (char) * str_len + 1)))
+	if (!(join = (char *)malloc(sizeof(char) * str_len + 1)))
 		return (NULL);
 	while (s1[k])
 	{
@@ -170,14 +167,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	y = k;
 	k = 0;
-	while (s2[k] && s2[k])
+	while (s2[k])
 	{
-		join[y] = s2[k];
-		k++;
+		join[y] = s2[k++];
 		y++;
 	}
-	join[y] = '\0';
+	join[y] = s2[k];
 	return (join);
 }
-
 #endif
