@@ -177,7 +177,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	str_len = ft_strlen(s1) + ft_strlen(s2);
 	k = 0;
-	if (!(join = (char *)malloc(sizeof(char) * str_len + 1)))
+	if (!(join = ft_strnew(str_len + 1)))
 		return (NULL);
 	while (s1[k])
 	{
