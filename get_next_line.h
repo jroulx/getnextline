@@ -1,7 +1,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
-# define BUFF_SIZE 30
+# define BUFF_SIZE 3000
 
 # include <stdlib.h>
 # include <unistd.h>

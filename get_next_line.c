@@ -61,16 +61,11 @@ int 		ft_reader(char **str, char **line, int fd)
 		if(!(k = read(fd, buffer, BUFF_SIZE)))
 			return (0);
 		buffer[k] = '\0';
-		ft_strcpy(*str, (char const*)buffer);
+		*str = ft_strdup((const char*)buffer);
 		if(tmp_init(&tmp, *str) != -2)
 		{
-			ft_putstr("\nSegfault ici ?");
 			if(!(*line = ft_strjoin(*line, tmp)))
-			{
-				ft_putstr("\nIci peut-être ?");
 				return (0);
-			}
-			ft_putstr("\nOu ici ?");
 			free(tmp);
 		}
 	}
@@ -118,10 +113,8 @@ int main(int argc, char **argv)
 	while (k == 1)
 	{
 		k = get_next_line(fd, &line);
-		ft_putstr("\nxxxxxxxxxxxxxxxxxxxxxx");
-		ft_putstr("\nline = ");
+		ft_putchar('\n');
 		ft_putstr(line);
-		ft_putstr("\nxxxxxxxxxxxxxxxxxxxxxx\n");
 	}
 	ft_putchar('\n');
 	free(line);

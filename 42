@@ -1,24 +1,125 @@
-1.  ** À quatre heures du matin, l'été, **
-2.  ** Le sommeil d'amour dure encore. **
-3.  ** Sous les bosquets l'aube évapore **
-4.  ** L'odeur du soir fêté. **
+#include "get_next_line.h"
 
-5.  ** Mais là-bas dans l'immense chantier **
-6.  ** Vers le soleil des Hespérides, **
-7.  ** En bras de chemise, les charpentiers **
-8.  ** Déjà s'agitent. **
+int			ft_checkerror(char **line, char **str)
+{
+	if (line == NULL)
+		return (-1);
+	if (!*str)
+	{
+		if (!(*str = ft_strnew(BUFF_SIZE + 1)))
+			return (-1);
+	}
+	return (0);
+}
 
-9.  ** Dans leur désert de mousse, tranquilles, **
-10. ** Ils préparent les lambris précieux **
-11. ** Où la richesse de la ville **
-12. ** Rira sous de faux cieux. **
+int			test_str(char *str)
+{
+	int k; // renvoie k si str contient des \n, sinon -1
 
-13. ** Ah ! pour ces Ouvriers charmants **
-14. ** Sujets d'un roi de Babylone, **
-15. ** Vénus ! laisse un peu les Amants, **
-16. ** Dont l'âme est en couronne. **
+	k = 0;
+	if (!str)
+		return (-2);
+	while (str[k])
+	{
+		if (str[k] == '\n')
+			return (k);
+		k++;
+	}
+	return (-1);
+}
 
-17. ** Ô Reine des Bergers ! **
-18. ** Porte aux travailleurs l'eau-de-vie, **
-19. ** Pour que leurs forces soient en paix **
-20. ** En attendant le bain dans la mer, à midi. ** 
+int			tmp_init(char **tmp, char *str)
+{
+	int k;
+	int y;
+
+	k = 0;
+	while (str[k] && str[k] != '\n')
+		k++;
+	if (k == 0)
+		return (-2);
+	if (!(*tmp =ft_strnew(k)))
+		return (-1);
+	y = 0;
+	while (y < k)
+	{
+		(*tmp)[y] = str[y];
+		y++;
+	}
+	(*tmp)[k] = '\0';
+	return (1);
+}
+
+int 		ft_reader(char **str, char **line, int fd)
+{
+	int k;
+	char buffer[BUFF_SIZE + 1];
+	char *tmp;
+
+	while (test_str(*str) == -1)
+	{
+		if(!(k = read(fd, buffer, BUFF_SIZE)))
+			return (0);
+		buffer[k] = '\0';
+		*str = ft_strdup((const char*)buffer);
+		if(tmp_init(&tmp, *str) != -2)
+		{
+			if(!(*line = ft_strjoin(*line, tmp)))
+				return (0);
+			free(tmp);
+		}
+	}
+	*str += test_str(*str) + 1;
+	return (1);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static char *str;
+	char		*tmp;
+
+	if (ft_checkerror(line, &str) == -1)
+		return (-1);
+	*line = ft_strnew(0);
+	if (str[0] == '\n')
+	{
+			*line = ft_strdup("");
+			str++;
+			return(1);
+	}
+	if (str[0])
+	{
+		tmp_init(&tmp, str);
+		*line = ft_strjoin(*line, tmp);
+		while (str[0] != '\n' && str[0] != '\0')
+			str++;
+		free(tmp);
+	}
+	if (ft_reader (&str, line, fd))
+		return (1);
+	else return (0);
+}
+
+int main(int argc, char **argv)
+{
+	char *line;
+	int 	fd;
+	int 	k;
+
+	k = 1;
+	(void)argc;
+	if((fd = open(argv[1], O_RDONLY)) == -1)
+		return (0);
+	while (k == 1)
+	{
+		k = get_next_line(fd, &line);
+		ft_putstr("\nxxxxxxxxxxxxxxxxxxxxxx");
+		ft_putstr("\nline = ");
+		ft_putstr(line);
+		ft_putstr("\nxxxxxxxxxxxxxxxxxxxxxx\n");
+	}
+	ft_putchar('\n');
+	free(line);
+	close (fd);
+	return (0);
+}
