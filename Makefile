@@ -11,7 +11,7 @@ OBJ = get_next_line.o
 all : $(NAME)
 	
 $(NAME) :	
-	$(CC) -c $(SRC)
+	$(CC) -c $(FLAG) $(SRC)
 	$(CC) -o $(NAME) $(OBJ)
 
 clean : 

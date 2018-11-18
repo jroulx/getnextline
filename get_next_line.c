@@ -28,7 +28,7 @@ int			test_str(char *str)
 	return (-1);
 }
 
-int			tmp_init(char **tmp, char *str, int rd_byte)
+int			tmp_init(char **tmp, char *str)
 {
 	int k;
 	int y;
@@ -63,7 +63,7 @@ int 		ft_reader(char **str, char **line, int fd)
 			return (0);
 		buffer[k] = '\0';
 		ft_strcpy(*str, (char const*)buffer);
-		if(tmp_init(&tmp, *str, k) != -2)
+		if(tmp_init(&tmp, *str) != -2)
 		{
 			ft_putstr("\nSegfault ici ?");
 			if(!(*line = ft_strjoin(*line, tmp)))
@@ -95,7 +95,7 @@ int			get_next_line(const int fd, char **line)
 	}
 	if (str[0])
 	{
-		tmp_init(&tmp, str, BUFF_SIZE);
+		tmp_init(&tmp, str);
 		*line = ft_strjoin(*line, tmp);
 		while (str[0] != '\n' && str[0] != '\0')
 			str++;
