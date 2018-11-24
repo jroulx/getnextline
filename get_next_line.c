@@ -1,111 +1,59 @@
 #include "get_next_line.h"
 
-int			ft_checkerror(char **line, char **str)
+int		ft_new_line(char **s, char **line, int fd, int ret)
 {
-	if (line == NULL)
-		return (-1);
-	if (!*str)
+	char	*tmp;
+	int		len;
+
+	len = 0;
+	while (s[fd][len] != '\n' && s[fd][len] != '\0')
+		len++;
+	if (s[fd][len] == '\n')
 	{
-		if (!(*str = ft_strnew(BUFF_SIZE + 1))) //MALLOC ICI
-			return (-1);
+		*line = ft_strsub(s[fd], 0, len);
+		tmp = ft_strdup(s[fd] + len + 1);
+		free(s[fd]);
+		s[fd] = tmp;
+		if (s[fd][0] == '\0')
+			ft_strdel(&s[fd]);
 	}
-	return (0);
-}
-
-int			test_str(char *str)
-{
-	int k; // renvoie k si str contient des \n, sinon -1
-
-	k = 0;
-	if (!str)
-		return (-2);
-	while (str[k])
+	else if (s[fd][len] == '\0')
 	{
-		if (str[k] == '\n')
-			return (k);
-		k++;
+		if (ret == BUFF_SIZE)
+			return (get_next_line(fd, line));
+		*line = ft_strdup(s[fd]);
+		ft_strdel(&s[fd]);
 	}
-	return (-1);
-}
-
-int			tmp_init(char **tmp, char *str)
-{
-	int k;
-	int y;
-
-	k = 0;
-	while (str[k] && str[k] != '\n')
-		k++;
-	if (k == 0)
-		return (-2);
-	if (!(*tmp = ft_strnew(k))) // MALLOC ICI
-		return (-1);
-	y = 0;
-	while (y < k)
-	{
-		(*tmp)[y] = str[y];
-		y++;
-	}
-	(*tmp)[k] = '\0';
 	return (1);
 }
 
-int 		ft_reader(char **str, char **line, int fd)
+int		get_next_line(const int fd, char **line)
 {
-	int k;
-	char buffer[BUFF_SIZE + 1];
-	char *tmp;
-	char *tmp2;
-
-	while (test_str(*str) == -1)
-	{
-		if(!(k = read(fd, buffer, BUFF_SIZE)))
-			return (0);
-		buffer[k] = '\0';
-		*str = ft_strdup((const char*)buffer); //MALLOC
-		if(tmp_init(&tmp, *str) != -2)
-		{
-			tmp2 = *line;
-			if(!(*line = ft_strjoin(*line, tmp))) //MALLOC
-				return (0);
-			free(tmp);
-			free(tmp2);
-		}
-	}
-	*str += test_str(*str) + 1;
-	return (1);
-}
-
-int			get_next_line(const int fd, char **line)
-{
-	static char *str;
+	static char	*s[255];
+	char		buf[BUFF_SIZE + 1];
 	char		*tmp;
-	char		*tmp2;
+	int			ret;
 
-	if (ft_checkerror(line, &str) == -1) //MALLOC checkerror
+	if (fd < 0 || line == NULL)
 		return (-1);
-	*line = ft_strnew(0); // MALLOC ?
-	if (str[0] == '\n')
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-			*line = ft_strdup(""); // MALLOC ?
-			str++;
-			return(1);
+		buf[ret] = '\0';
+		if (s[fd] == NULL)
+			s[fd] = ft_strnew(1);
+		tmp = ft_strjoin(s[fd], buf);
+		free(s[fd]);
+		s[fd] = tmp;
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
-	if (str[0])
-	{
-		tmp2 = *line;
-		tmp_init(&tmp, str); //MALLOC TMP
-		*line = ft_strjoin(*line, tmp); // MALLOC RETURN SUR LINE
-		while (str[0] != '\n' && str[0] != '\0')
-			str++;
-		free(tmp);
-		free(tmp2);
-	}
-	if (ft_reader (&str, line, fd))
-		return (1);
-	else return (0);
+	if (ret < 0)
+		return (-1);
+	else if (ret == 0 && (s[fd] == NULL || s[fd][0] == '\0'))
+		return (0);
+	return (ft_new_line(s, line, fd, ret));
 }
-
+//MAAAAAAAAAAAAAAAAAAAAAAAAIIIIIIIIIIIIINNNNNNNNNNNN
 int		main(int argc, char **argv)
 {
 	int		fd;

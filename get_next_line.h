@@ -28,7 +28,31 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putchar(char c);
 void	ft_putendl_fd(char const *s, int fd);
 void	ft_putendl(char const *s);
+void	ft_strdel(char **as);
+int		get_next_line(const int fd, char **line);
+char	*ft_strchr(const char *s, int c);
 
+char	*ft_strchr(const char *s, int c)
+{
+	int k;
+
+	k = 0;
+	while (s[k] != (char)c && (s[k]))
+		k++;
+	if (s[k] == (char)c)
+		return ((char *)s + k);
+	return (NULL);
+}
+
+void	ft_strdel(char **as)
+{
+	if (as)
+	{
+		free(*as);
+		*as = NULL;
+	}
+	return ;
+}
 
 void	ft_putendl(char const *s)
 {
