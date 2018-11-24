@@ -1,7 +1,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
-# define BUFF_SIZE 3000
+# define BUFF_SIZE 42
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -16,14 +16,90 @@ char	*ft_strdup(const char *s);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strcpy(char *dest, const char *src);
 int 	ft_strlen(const char *str);
-void	ft_putchar(char c);
-void 	ft_putstr(char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	*ft_memmove(void *dest, const void *src, size_t howmany);
 void	ft_putnbr_fd(int nbr, int fd);
 void	ft_putchar_fd(char c, int fd);
 char	*ft_strnew(size_t size);
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
+void	ft_putstr_fd(char const *s, int fd);
+void	ft_putstr(char const *str);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putchar(char c);
+void	ft_putendl_fd(char const *s, int fd);
+void	ft_putendl(char const *s);
 
+
+void	ft_putendl(char const *s)
+{
+	ft_putendl_fd(s, 1);
+}
+
+void	ft_putendl_fd(char const *s, int fd)
+{
+	if (!s)
+		return ;
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}
+
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putstr(char const *str)
+{
+	int k;
+
+	k = 0;
+	if (!str)
+		return ;
+	while (str[k])
+	{
+		ft_putchar(str[k]);
+		k++;
+	}
+}
+
+void	ft_putstr_fd(char const *s, int fd)
+{
+	int		k;
+
+	if (!s)
+		return ;
+	k = 0;
+	while (s[k])
+	{
+		ft_putchar_fd(s[k], fd);
+		k++;
+	}
+}
+
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
+{
+	char			*sub;
+	unsigned int	k;
+
+	k = 0;
+	if (!s)
+		return (NULL);
+	if (!(sub = (char *)malloc(sizeof(char) * len + 1)))
+		return (NULL);
+	while (k < len)
+	{
+		sub[k] = s[k + start];
+		k++;
+	}
+	sub[k] = '\0';
+	return (sub);
+}
 
 char	*ft_strnew(size_t size)
 {
@@ -41,11 +117,6 @@ char	*ft_strnew(size_t size)
 		k++;
 	}
 	return (reset);
-}
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
 }
 
 void	ft_putnbr_fd(int nbr, int fd)
@@ -147,23 +218,6 @@ int 	ft_strlen(const char *str)
 	while (str[k])
 		k++;
 	return (k);
-}
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-void 	ft_putstr(char *str)
-{
-	int k;
-
-	k = 0;
-	while (str[k])
-	{
-		ft_putchar(str[k]);
-		k++;
-	}
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)

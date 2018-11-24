@@ -17,6 +17,9 @@ $(NAME) :
 clean : 
 	rm -rf $(OBJ)
 
+val :
+	$(CC) -g $(SRC)
+
 fclean : clean
 	rm -rf $(NAME)
 
